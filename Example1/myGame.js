@@ -41,13 +41,13 @@ room.can.onClick = function(){
 	room.can.pick()
 }
 
-room.key = room.createObject("key", "반수환-1.jpg")
-room.key.setWidth(50)
-room.locateObject(room.key, 250, 110)
+room.ban = room.createObject("ban", "반수환-1.jpg")
+room.ban.setWidth(50)
+room.locateObject(room.ban, 250, 110)
 
-room.key.onClick = function(){
+room.ban.onClick = function(){
 	printMessage("반수환(증명사진)을 주웠다!")
-	room.key.pick()
+	room.ban.pick()
 }
 room.book2 = room.createObject("book2", "책3-1.png")
 room.book2.setWidth(80)
@@ -83,15 +83,19 @@ room.book3.onClick = function() {
 	showImageViewer("종이.png", "room1_책3.txt"); // 이미지 출력
 }
 
+room.eid = room.createObject("eid", "e-id.png") // 오브젝트 생성
+room.eid.setWidth(70) // 크기 조절
+room.locateObject(room.eid, 930, 200) // 위치 변경
+
 room.keypad = room.createObject("keypad", "숫자키-우.png") // 오브젝트 생성
 room.keypad.setWidth(50) // 크기 조절
 room.locateObject(room.keypad, 930, 250) // 위치 변경
 
 room.keypad.onClick = function() {
-	if(game.getHandItem() == room.key)
+	if(game.getHandItem() == room.ban)
 	{
-		printMessage("객체지향 첫 강의 날짜는?") // 클릭했을 때 출력
-		showKeypad("number", "0904" , function(){
+		printMessage("반수환의 학번 앞자리 4개는? (Ctrl + 휠 확대로 e-id 확인)") // 클릭했을 때 출력
+		showKeypad("number", "2015" , function(){
 			room.door.unlock() // door의 잠금을 연다
 			printMessage("잠금장치가 열리는 소리가 들렸다.") // 비밀번호를 풀었을 때 출력
 		})
@@ -129,7 +133,7 @@ room2.cupboard.onClick = function() { // 클릭했을 때
 }
 
 room2.key.onClick = function(){
-	room2.key.pick()
+	printMessage("가짜 키인 것 같다... 리모콘을 사용해보자.")
 }
 
 room2.cupboard.onOpen = function() {
@@ -151,17 +155,54 @@ room2.closet.setWidth(300)
 room2.locateObject(room2.closet, 250, 305)
 
 
+
+room2.cau = room2.createObject("cau", "청룡.jpg")
+room2.cau.setWidth(200)
+room2.locateObject(room2.cau, 520, 200)
+room2.cau.hide()
+
+room2.cau.onClick = function(){
+	printMessage("샤워중인 청룡이를 발견했다!")
+	room2.cau.pick()
+}
+
 room2.closet.move = true // 플래그 변수
 room2.closet.onDrag = function(direction){ // 드래그 모션 direction - Up, Down, Left, Right
 	if(direction == "Right" && room2.closet.move){ // 오른쪽으로 드래그 했으면
-		printMessage("옷장을 밀어버렸다!")
-		room2.closet.moveX(200) // X 방향으로 200 이동
-		room2.closet.moveY(-40) // Y 방향으로 -40 이동
-		room2.closet.move = false // 이후에는 더 이상 움직이지 않도록 합니다.
-	} else {
+		if(game.getHandItem() == room2.cau){	
+			printMessage("옷장을 밀어버렸다!")
+			room2.closet.moveX(200) // X 방향으로 200 이동
+			room2.closet.moveY(-40) // Y 방향으로 -40 이동
+			room2.closet.move = false // 이후에는 더 이상 움직이지 않도록 합니다.
+		}
+		else
+		{
+			printMessage("청룡의 힘이 필요하다...")
+		}
+		} else {
 		printMessage("열리지 않는다.")
 	}
 }
+
+
+roomLight = true // 플래그 변수
+
+room2.remote = room2.createObject("remote", "리모컨.png")
+room2.remote.setWidth(70)
+room2.locateObject(room2.remote, 800, 550)
+
+room2.remote.onClick = function() {
+	if(roomLight) {
+		room2.setRoomLight(0.2)
+		roomLight = false
+		room2.cau.show()
+	} else {
+		room2.setRoomLight(1)
+		roomLight = true
+		room2.cau.hide()
+	}
+}
+
 
 room2.door2.onClick = function() { // door2를 클릭했을 때
 	if(room2.door2.isClosed()){ // door2가 closed 상태이면
@@ -171,6 +212,19 @@ room2.door2.onClick = function() { // door2를 클릭했을 때
 	} else {
 		// do nothing
 	}
+}
+
+
+room2.right = room2.createObject("right", "화살표-오른쪽.png")
+room2.right.setWidth(100)
+room2.locateObject(room2.right, 310, 550)
+
+room2.cau2 = room2.createObject("cau2", "cau.png")
+room2.cau2.setWidth(300)
+room2.locateObject(room2.cau2, 1100, 350)
+
+room2.cau2.onClick = function(){
+	printMessage("청룡의 힘이 필요하다...")
 }
 
 room2.door2.onOpen = function() {
