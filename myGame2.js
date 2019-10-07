@@ -1,155 +1,6 @@
-﻿room1 = game.createRoom("room1", "room1.png") // 방 생성
+﻿room = game.createRoom("room", "room1.png") // 방 생성
+room2 = game.createRoom("room2","배경-6.png") // 방 생성
 
-function MakeObject(room, name, picture, size, locate_x, locate_y) 
-{
-	object = room.createObject(name, picture)
-	object.setWidth(size)
-	room.locateObject(object, locate_x, locate_y)
-
-	return object
-}
-
-
-room1.chair1 = MakeObject(room1, "chair1", "chair1.png", 300, 800, 500)
-room1.table1 = MakeObject(room1, "table1", "table1.png", 300, 1000, 600)
-room1.keypad1 = MakeObject(room1, "keypad1", "keypad1.png", 120, 155, 510)
-room1.orangejuice1 = MakeObject(room1, "orangejuice1", "orangejuice1.png", 70, 1050, 510)
-room1.cookie1 = MakeObject(room1, "cookie1", "cookie1.png", 60, 950, 550)
-room1.box1 = MakeObject(room1, "box1", "box1-close.png", 200, 500, 600)
-room1.straw1 = MakeObject(room1, "straw1", "straw1.png", 100, 500, 600)
-room1.strong = MakeObject(room1, "strong", "strong.png", 100, 100, 650)
-room1.num1 = MakeObject(room1, "num1", "0.png", 50, 180, 660)
-room1.num2 = MakeObject(room1, "num2", "0.png", 50, 220, 660)
-room1.drug1 = MakeObject(room1, "drug1", "drug1.png", 70, 700, 600)
-room1.portal1 = MakeObject(room1, "portal1", "portal1.png", 300, 550, 350)
-
-var strong_cnt = 0
-
-// function ShowStrong_num1(cnt)
-// {
-// 	var temp = cnt % 10
-
-// 	var text1 = String(temp)
-// 	var text2 = ".png"
-
-// 	room1.num1.setSprite(text1.concat(text2))
-// }
-
-function ShowStrong(cnt)
-{
-	var temp = cnt % 10
-
-	var text1 = String(temp)
-	var text2 = ".png"
-
-	room1.num2.setSprite(text1.concat(text2))
-}
-
-room1.straw1.hide()
-room1.drug1.hide()
-room1.portal1.hide()
-
-room1.portal1.onClick = function() {
-	printMessage("어둠이 나를 집어 삼키는 것 같다 ...")
-	game.move(room2)
-}
-
-room1.chair1.onClick = function() {
-	if(room1.chair1.isLocked())
-	{
-		printMessage("너무 흔들어서 의자가 고장나 버렸다.")
-	}
-	else
-	{
-		printMessage("의자가 흔들리며 무엇인가가 떨어졌다.")
-		room1.chair1.lock()
-		room1.drug1.show()
-	}
-}
-
-room1.drug1.onClick = function() {
-	printMessage("알약 3개를 복용했다! 힘이 1 증가했다!")
-	ShowStrong(++strong_cnt)
-	room1.drug1.hide()
-}
-
-room1.straw1.onClick = function(){
-	printMessage("빨대를 주웠다. 무언가를 마셔보자.")
-	room1.straw1.pick()
-}
-
-room1.orangejuice1.onClick = function() { 
-	if(game.getHandItem() == room1.straw1) 
-	{
-		if(strong_cnt > 0)
-		{
-			showImageViewer("orangejuice1-empty.png","")
-			printMessage("오렌지 주스를 원샷했다! 힘이 1 증가했다!")
-			ShowStrong(++strong_cnt)
-		}
-		else
-		{
-			printMessage("힘이 1 이상이어야 마실 수 있다.")
-		}
-	}
-	else
-	{
-		showImageViewer("orangejuice1.png","")
-		printMessage("오렌지 주스다. 빨대가 있으면 마실 수 있을 것 같다.")
-	}
-}
-
-room1.cookie1.onClick = function(){
-	printMessage("평범해 보이는 쿠키이다.")
-}
-
-room1.box1.onClick = function() {
-	if(strong_cnt > 0) 
-	{	
-		room1.box1.setSprite("box1-open.png")
-		room1.straw1.show()
-	}
-	else
-	{
-		printMessage("힘이 1 이상이어야 열 수 있다.")
-	}
-}
-
-room1.keypad1.onClick = function() {
-	
-	if(strong_cnt < 2)
-		printMessage("오렌지 주스를 마시고 힌트를 얻자.")
-	else
-	{		showKeypad("number", "2052" , function(){
-			room1.portal1.show()
-			printMessage("수상한 포탈이 열렸다.")
-		 })
-	}
-}
-game.start(room1)
-printMessage("힘을 키워 방을 탈출하자!")
-
-
-
-
-
-// room.keypad.onClick = function() {
-// 	if(game.getHandItem() == room.ban)
-// 	{
-// 		printMessage("반수환의 학번 앞자리 4개는? (Ctrl + 휠 확대로 e-id 확인)") // 클릭했을 때 출력
-// 		showKeypad("number", "2015" , function(){
-// 			room.door.unlock() // door의 잠금을 연다
-// 			printMessage("잠금장치가 열리는 소리가 들렸다.") // 비밀번호를 풀었을 때 출력
-// 		})
-// 	}
-// 	else
-// 	{
-// 		printMessage("증명사진이 필요할 것 같다.");
-// 	}
-// }
-
-
-/*
 room.door = room.createObject("door", "문-오른쪽-닫힘.png") // 문 생성
 room.door.setWidth(136) // 크기 조절
 room.locateObject(room.door, 1049, 300) // 문 배치
@@ -235,6 +86,25 @@ room.book3.onClick = function() {
 room.eid = room.createObject("eid", "e-id.png") // 오브젝트 생성
 room.eid.setWidth(70) // 크기 조절
 room.locateObject(room.eid, 930, 200) // 위치 변경
+
+room.keypad = room.createObject("keypad", "숫자키-우.png") // 오브젝트 생성
+room.keypad.setWidth(50) // 크기 조절
+room.locateObject(room.keypad, 930, 250) // 위치 변경
+
+room.keypad.onClick = function() {
+	if(game.getHandItem() == room.ban)
+	{
+		printMessage("반수환의 학번 앞자리 4개는? (Ctrl + 휠 확대로 e-id 확인)") // 클릭했을 때 출력
+		showKeypad("number", "2015" , function(){
+			room.door.unlock() // door의 잠금을 연다
+			printMessage("잠금장치가 열리는 소리가 들렸다.") // 비밀번호를 풀었을 때 출력
+		})
+	}
+	else
+	{
+		printMessage("증명사진이 필요할 것 같다.");
+	}
+}
 
 
 //----------------------------------------------------------------------------
@@ -363,5 +233,3 @@ room2.door2.onOpen = function() {
 
 game.start(room) // 게임시작
 printMessage("방탈출에 오신 것을 환영합니다!") // 환영 메시지 출력
-
-*/
