@@ -1,5 +1,6 @@
 ﻿room1 = game.createRoom("room1", "room1.png") // 방 생성
 room2 = game.createRoom("room2", "room2.png")
+room3 = game.createRoom("room3", "room3.png")
 
 function MakeObject(room, name, picture, size, locate_x, locate_y) 
 {
@@ -15,7 +16,7 @@ room1.chair1 = MakeObject(room1, "chair1", "chair1.png", 300, 800, 500)
 room1.table1 = MakeObject(room1, "table1", "table1.png", 300, 1000, 600)
 room1.keypad1 = MakeObject(room1, "keypad1", "keypad1.png", 120, 155, 510)
 room1.orangejuice1 = MakeObject(room1, "orangejuice1", "orangejuice1.png", 70, 1050, 510)
-room1.cookie1 = MakeObject(room1, "cookie1", "cookie1.png", 60, 950, 550)
+room1.book1 = MakeObject(room1, "book1", "book.png", 60, 950, 550)
 room1.box1 = MakeObject(room1, "box1", "box1-close.png", 200, 500, 600)
 room1.straw1 = MakeObject(room1, "straw1", "straw1.png", 100, 500, 600)
 room1.strong = MakeObject(room1, "strong", "strong.png", 100, 100, 650)
@@ -43,7 +44,8 @@ room1.portal1.hide()
 
 room1.tv1.lock()
 
-var check1 = 0
+check1_1 = true
+check1_2 = true
 
 room1.tv1.onClick = function() {
 	if(room1.tv1.isLocked())
@@ -53,12 +55,12 @@ room1.tv1.onClick = function() {
 	}
 	else
 	{	
-		if(check1 == 0)
+		if(check1_1)
 		{	
 			printMessage("질풍가도를 들린다! 힘이 1 증가했다!")
 			playSound("tv1.wav")
 			ShowStrong(++strong_cnt, room1.num2)
-			check1 = 1
+			check1_1 = false
 		}
 		else
 		{
@@ -104,7 +106,9 @@ room1.orangejuice1.onClick = function() {
 		{
 			showImageViewer("orangejuice1-empty.png","")
 			printMessage("오렌지 주스를 원샷했다! 힘이 1 증가했다!")
-			ShowStrong(++strong_cnt, room1.num2)
+			if(check1_2)
+				ShowStrong(++strong_cnt, room1.num2)
+			check1_2 = false
 		}
 		else
 		{
@@ -118,8 +122,8 @@ room1.orangejuice1.onClick = function() {
 	}
 }
 
-room1.cookie1.onClick = function(){
-	printMessage("평범해 보이는 쿠키이다.")
+room1.book1.onClick = function(){
+	showImageViewer("paper.png", "hint1.txt"); 
 }
 
 room1.box1.onClick = function() {
@@ -150,7 +154,6 @@ room1.keypad1.onClick = function() {
 }
 ////////////////////////////////////////////////////////////////
 
-//room1.tv1 = MakeObject(room1, "tv1", "tv1.png", 200, 550, 300)
 
 room2.board2 = MakeObject(room2, "board2", "board2.png", 300, 1000, 300)
 room2.bucket2 = MakeObject(room2, "bucket2", "bucket2.png", 120, 800, 600)
@@ -163,15 +166,18 @@ room2.chair2 = MakeObject(room2, "chair2", "chair2-1.png", 150, 1200, 600)
 room2.strong = MakeObject(room2, "strong", "strong.png", 100, 100, 650)
 room2.num1 = MakeObject(room2, "num1", "0.png", 50, 180, 660)
 room2.num2 = MakeObject(room2, "num2", "0.png", 50, 220, 660)
+room2.book2 = MakeObject(room2, "book2", "book.png", 60, 500, 630)
 
+room2.book2.onClick = function(){
+	showImageViewer("paper.png", "hint2.txt"); 
+}
 
 room2.chalk2.hide()
 room2.portal2.hide()
 
-
 room2.chair2.onClick = function() {
 
-	if(strong_cnt < 2)
+	if(strong_cnt < 5)
 	{
 		printMessage("힘이 5 이상이어야 의자를 세울 수 있다.")
 	}
@@ -184,8 +190,6 @@ room2.chair2.onClick = function() {
 		printMessage("의자를 일으켜세웠다.")
 		room2.chair2.moveX(-50)
 		room2.chair2.moveY(-50)
-		room2.chair2.moveY
-		//room.bookshelf.moveY(600)
 		room2.chair2.setSprite("chair2.png")
 		room2.chair2.lock()
 	}
@@ -231,7 +235,7 @@ room2.chocolate2.onClick = function() {
 }
 
 room2.octagonal2.onClick = function() {
-	if(strong_cnt < 1)
+	if(strong_cnt < 4)
 		printMessage("힘이 4 이상이어야 밀 수 있다.")
 	else if(room2.octagonal2.getX() > 700)
 		{
@@ -245,12 +249,167 @@ room2.octagonal2.onClick = function() {
 }
 
 
+//////////////////////////////////////////////////////////////
 
-game.start(room3)
+room3.setRoomLight(0.2)
+
+room3.lamp3 = MakeObject(room3, "lamp3", "lamp3.png", 100, 500, 100)
+room3.fake3 = MakeObject(room3, "fake3", "fake3.png", 300, 200, 400)
+room3.portal3 = MakeObject(room3, "portal3", "portal1.png", 280, 200, 230)
+room3.portal3.hide()
+room3.portalgun3 = MakeObject(room3, "portalgun3", "portal-gun3.png", 200, 300, 600)
+room3.battery3 = MakeObject(room3, "battery3", "battery3.png", 50, 1100, 650)
+room3.pepperoni3 = MakeObject(room3, "pepperoni3", "pepperoni3.png", 100, 900, 600)
+room3.frame3 = MakeObject(room3, "frame3", "frame3.png", 300, 900, 300)
+room3.book3 = MakeObject(room3, "book3", "book.png", 60, 500, 630)
+
+room3.book3.onClick = function(){
+	showImageViewer("paper.png", "hint3.txt"); 
+}
+
+room3.portalgun = room3.createObject("portalgun", "portal-gun3-1.png")
+room3.portalgun.hide()
+
+game.makeCombination(room3.battery3, room3.portalgun3, room3.portalgun)
+
+temp = 80
+room3.square3_1 = new Square(room3, "square3_1", "square3.png", 80, 820, 220, 1)
+room3.square3_2 = new Square(room3, "square3_2", "square3.png", 80, 820+temp, 220, 2)
+room3.square3_3 = new Square(room3, "square3_3", "square3.png", 80, 820+(temp*2), 220, 3)
+room3.square3_4 = new Square(room3, "square3_4", "square3.png", 80, 820, 220+temp, 4)
+room3.square3_5 = new Square(room3, "square3_5", "square3.png", 80, 820+temp, 220+temp, 5)
+room3.square3_6 = new Square(room3, "square3_6", "square3.png", 80, 820+(temp*2), 220+temp, 6)
+room3.square3_7 = new Square(room3, "square3_7", "square3.png", 80, 820, 220+(temp*2), 7)
+room3.square3_8 = new Square(room3, "square3_8", "square3.png", 80, 820+temp, 220+(temp*2), 8)
+room3.square3_9 = new Square(room3, "square3_9", "square3.png", 80, 820+(temp*2), 220+(temp*2), 9)
+room3.reset3 = MakeObject(room3, "reset3", "reset3.png", 60, 1020, 480)
+
+var check3 = new Array()
+
+for(i=0; i<9; i++)
+{
+	check3[i] = false
+}
+
+function Square(room, name, picture, size, locate_x, locate_y, num)
+{
+	this.num = num
+	this.obj = MakeObject(room, name, picture, size, locate_x, locate_y)
+}
+
+Square.prototype.onClick = function()
+{
+	this.obj.hide()
+	check3[this.num-1] = true
+	check_picture()
+}
+Square.prototype.Show = function()
+{
+	this.obj.show()
+	check3[this.num-1] = false
+}
+
+check3_sub = true
+
+function check_picture() 
+{
+	if(check3[0] && check3[1] && check3[2] && check3[5] && check3[8] && check3_sub
+		 && !check3[3] && !check3[4] && !check3[6] && !check3[7])
+	{
+		printMessage("ㄱ자를 깨달음으로써 힘이 2 증가했다!!!")
+		strong_cnt += 2
+		ShowStrong(strong_cnt, room3.num2)
+		check3_sub = false
+	}
+}
+
+room3.portal3.lock()
+
+room3.portal3.onClick = function() {
+	if(room3.portal3.isLocked())
+	{
+		printMessage("숫자 10을 2진수로 표현하면? (6자리)")
+		showKeypad("telephone", "001010" , function(){
+			printMessage("포탈로 들어갈 준비가 되었다.")
+			room3.portal3.unlock()
+		})
+	}
+	else
+	{
+		game.clear()
+	}
+
+}
+
+room3.fake3.onClick = function() {
+	printMessage("포탈건을 여기에 쏴보자.")
+	if(game.getHandItem() == room3.portalgun)	
+	{
+		printMessage("포탈이 열렸다.")
+		room3.portal3.show()
+	}
+}
+
+room3.reset3.onClick = function() {
+	room3.square3_1.Show()
+	room3.square3_2.Show()
+	room3.square3_3.Show()
+	room3.square3_4.Show()
+	room3.square3_5.Show()
+	room3.square3_6.Show()
+	room3.square3_7.Show()
+	room3.square3_8.Show()
+	room3.square3_9.Show()
+}
+
+room3.strong = MakeObject(room3, "strong", "strong.png", 100, 100, 650)
+room3.num1 = MakeObject(room3, "num1", "0.png", 50, 180, 660)
+room3.num2 = MakeObject(room3, "num2", "0.png", 50, 220, 660)
+
+roomLight = false
+
+room3.lamp3.onClick = function() {
+	if(roomLight == false) 
+	{
+		room3.setRoomLight(1)
+		roomLight = true
+	}
+	else
+	{
+		room3.setRoomLight(0.2)
+		roomLight = false
+	}
+}
+
+
+room3.pepperoni3.onClick = function() {
+	printMessage("페퍼로니 4개를 먹었다! 예전의 힘이 돌아오면서 힘이 증가했다!!!")
+	ShowStrong(++strong_cnt, room3.num2)
+	room3.pepperoni3.hide()
+}
+
+room3.battery3.onClick = function() {
+	if(strong_cnt < 6)
+		printMessage("힘이 6이상이어야 건전지를 주울 수 있다.")
+	else
+	{
+		printMessage("포탈건에 넣을 수 있는 건전지이다. 힘이 1 증가했다!!!")
+		ShowStrong(++strong_cnt, room3.num2)
+		room3.battery3.pick()
+	}
+}
+room3.portalgun3.onClick = function() {
+	if(strong_cnt < 9)
+		printMessage("포탈 건이다. 힘이 9이상이어야 들 수 있다.")
+	else
+	{
+		printMessage("포탈 건을 획득했다. 건전지를 넣어보자.")
+		room3.portalgun3.pick()
+	}
+}
+
+game.start(room1)
 printMessage("힘을 키워 방을 탈출하자!")
-
-
-
 
 
 // room.keypad.onClick = function() {
